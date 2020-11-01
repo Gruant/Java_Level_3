@@ -3,8 +3,12 @@ package ru.antongrutsin.BigTask;
 import java.util.ArrayList;
 
 public class Box<T extends Fruit>{
-    private final T obj;
+    private T obj;
     private final ArrayList<T> storage = new ArrayList<>();
+
+    public Box() {
+
+    }
 
     public Box(T obj, int value) {
         this.obj = obj;
