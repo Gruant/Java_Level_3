@@ -7,7 +7,6 @@ public class Box<T extends Fruit>{
     private final ArrayList<T> storage = new ArrayList<>();
 
     public Box() {
-
     }
 
     public Box(T obj, int value) {
