@@ -1,6 +1,5 @@
 package ru.antongrutsin;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.util.Scanner;
 
@@ -15,6 +14,7 @@ public class TaskThree {
 
     public static void main(String[] args) {
         long timeOne = System.currentTimeMillis();
+        int x;
 
         System.out.println("Для выхода необходимо нажать 0");
         int pageNumber;
@@ -24,7 +24,7 @@ public class TaskThree {
             long deltaOne = System.currentTimeMillis() - timeOne;
             System.out.println("Время загрузки: " + deltaOne + " мс");
             System.out.println();
-            int x;
+
             do {
                 System.out.print("Введите страницу: ");
                 pageNumber = sc.nextInt();
