@@ -31,7 +31,7 @@ public class Customer implements Runnable{
             mfu.scannerToEmail();
         } else {
             System.out.println("Пользователь №"+ this.name + " хочет сделать копию и отправить ее по Email");
-            mfu.photocopierToPrint();
+            mfu.photocopierToEmail();
         }
 
     }

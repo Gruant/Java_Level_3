@@ -7,86 +7,37 @@ import sun.print.PrintJob2D;
 (порядок – ABСABСABС). Используйте wait/notify/notifyAll.
  */
 public class TaskOne {
-    private volatile int flag = 1;
-
+    static volatile char str = 'A';
     public static void main(String[] args) {
-        TaskOne obj = new TaskOne();
-
-        Thread t1 = new Thread(new Runnable() {
+        Object lock = new Object();
+        class MyTask implements Runnable {
+            private char b;
+            private char nextB;
+            public MyTask(char b, char nextB) {
+                this.b = b;
+                this.nextB = nextB;
+            }
             @Override
             public void run() {
-                obj.printA();
-            }
-        });
-
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                obj.printB();
-            }
-        });
-
-        Thread t3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                obj.printC();
-            }
-        });
-
-        t1.start();
-        t2.start();
-        t3.start();
-
-
-    }
-
-    synchronized void printA() {
-        try {
-            for (int i = 0; i < 5; i++) {
-                while(flag!=1) {
-                    wait();
+                synchronized (lock) {
+                    for (int i = 0; i < 5; i++) {
+                        try {
+                            while (str != b) {
+                                lock.wait();
+                            }
+                            System.out.print(b);
+                            str = nextB;
+                            lock.notifyAll();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-                System.out.print("A");
-                setFlag(2);
-                notifyAll();
             }
-        } catch (InterruptedException  e) {
-            e.printStackTrace();
         }
-    }
-
-    synchronized void printB(){
-        try {
-            for (int i = 0; i < 5; i++) {
-                while(flag!=2) {
-                    wait();
-                }
-                System.out.print("B");
-                setFlag(3);
-                notifyAll();
-            }
-        } catch (InterruptedException  e) {
-            e.printStackTrace();
-        }
-    }
-
-    synchronized void printC(){
-        try {
-            for (int i = 0; i < 5; i++) {
-                while(flag!=3) {
-                    wait();
-                }
-                System.out.print("C");
-                setFlag(1);
-                notifyAll();
-            }
-        } catch (InterruptedException  e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setFlag(int flag){
-        this.flag = flag;
+        new Thread(new MyTask('A', 'B')).start();
+        new Thread(new MyTask('B', 'C')).start();
+        new Thread(new MyTask('C', 'A')).start();
     }
 
 }
