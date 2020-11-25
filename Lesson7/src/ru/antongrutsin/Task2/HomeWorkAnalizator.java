@@ -3,13 +3,13 @@ package ru.antongrutsin.Task2;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,9 +19,8 @@ public class HomeWorkAnalizator {
     private static String className;
     private static String pathString;
     private static String PATH = "/Users/antongrutsin/Desktop/Java_Level_1-lesson-2";
-    private static final HashMap<String, String> pathMap = new HashMap<>();
 
-    public static void main(String[] args) throws MalformedURLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         findClasses();
         loadClass();
     }
@@ -41,16 +40,19 @@ public class HomeWorkAnalizator {
 
     public static void isClass(String path) {
         if (path.endsWith("class")) {
-            className = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf('.'));
-            pathString = path.substring(0, path.lastIndexOf("/"));
+            className = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf('.'));
+            System.out.println(className);
 
         }
     }
 
-    public static void loadClass() throws MalformedURLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        Class testClass = URLClassLoader.newInstance(new URL[]{new File(pathString).toURL()}).loadClass(className);
-        Object newClass = testClass.newInstance();
-        System.out.println(newClass.getClass());
+    public static void loadClass() throws Exception {
+        Class testClass = URLClassLoader.newInstance(new URL[]{new File(PATH).toURL()}).loadClass(className);
+        Constructor constructor = testClass.getConstructor();
+        Object newClass = constructor.newInstance();
+
+
+
 
     }
 
